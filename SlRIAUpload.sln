@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlRIAUpload", "SlRIAUpload\SlRIAUpload.csproj", "{5D04437E-2F16-4BF6-ACDF-4EE47ABA6B23}"
+	ProjectSection(ProjectDependencies) = postProject
+		{30B381C8-B7D1-430B-ADA4-8D20ECA7CBF5} = {30B381C8-B7D1-430B-ADA4-8D20ECA7CBF5}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlRIAUpload.Web", "SlRIAUpload.Web\SlRIAUpload.Web.csproj", "{30B381C8-B7D1-430B-ADA4-8D20ECA7CBF5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5D04437E-2F16-4BF6-ACDF-4EE47ABA6B23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D04437E-2F16-4BF6-ACDF-4EE47ABA6B23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D04437E-2F16-4BF6-ACDF-4EE47ABA6B23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D04437E-2F16-4BF6-ACDF-4EE47ABA6B23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30B381C8-B7D1-430B-ADA4-8D20ECA7CBF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30B381C8-B7D1-430B-ADA4-8D20ECA7CBF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30B381C8-B7D1-430B-ADA4-8D20ECA7CBF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30B381C8-B7D1-430B-ADA4-8D20ECA7CBF5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
