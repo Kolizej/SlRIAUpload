@@ -70,7 +70,7 @@ namespace SlRIAUpload
             txtStatus.Text = "Uploading...";
             retryRead = true;
             byte[] buffer = new byte[bufferSize];
-            while (retryRead)
+            //while (retryRead)
             {
                 try
                 {
@@ -80,20 +80,7 @@ namespace SlRIAUpload
                 }
                 catch (IOException ee)
                 {
-                    if (MessageBox.Show(string.Format("Error occured while reading source file: {0} Try read again?", ee.Message), "Error", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
-                    {
-                        retryRead = true;
-                        _finfo.Refresh();
-                        fs = _finfo.OpenRead();
-                        fs.Seek(currentSeekPosition, SeekOrigin.Begin);
-                        br = new BinaryReader(fs);
-                    }
-                    else
-                    {
-                        retryRead = false;
-                        _context.FileIfExistsDelete(_finfo.Name);
-                        return null;
-                    }
+                    Resume(ee);
                 }
             }
 
@@ -109,6 +96,31 @@ namespace SlRIAUpload
 
             currentBuffer = buffer;
             return buffer;
+        }
+
+        private void Resume(IOException ee)
+        {
+            if (MessageBox.Show(string.Format("Error occured while reading source file: {0} Try read again?", ee.Message), "Error", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            {
+                Thread.Sleep(5000);
+                try
+                {
+                    retryRead = true;
+                    _finfo.Refresh();
+                    fs = _finfo.OpenRead();
+                    fs.Seek(currentSeekPosition, SeekOrigin.Begin);
+                    br = new BinaryReader(fs);
+                }
+                catch (IOException e)
+                {
+                    Resume(e);
+                }
+            }
+            else
+            {
+                retryRead = false;
+                _context.FileIfExistsDelete(_finfo.Name);
+            }
         }
 
         private void writeNextBuffer(byte[] buffer)

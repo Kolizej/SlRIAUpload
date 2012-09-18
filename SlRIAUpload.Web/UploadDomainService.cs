@@ -18,7 +18,7 @@ namespace SlRIAUpload.Web
         {
             try
             {
-                string uploadPath = System.Configuration.ConfigurationManager.AppSettings.Get("uploadPath");
+                string uploadPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Upload");//System.Configuration.ConfigurationManager.AppSettings.Get("uploadPath");
                 FileStream fs = new FileStream(string.Format(@"{0}\{1}",uploadPath, fileName), FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
                 BinaryWriter fileWriter = new BinaryWriter(fs);
                 fileWriter.Write(buffer);
@@ -35,7 +35,7 @@ namespace SlRIAUpload.Web
         {
             try
             {
-                string uploadPath = System.Configuration.ConfigurationManager.AppSettings.Get("uploadPath");
+                string uploadPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Upload");//System.Configuration.ConfigurationManager.AppSettings.Get("uploadPath");
                 if (File.Exists(string.Format(@"{0}\{1}", uploadPath, fileName)))
                     File.Delete(string.Format(@"{0}\{1}", uploadPath, fileName));
                 return true;
