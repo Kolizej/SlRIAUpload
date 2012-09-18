@@ -100,8 +100,6 @@ namespace SlRIAUpload
 
         private void Resume(IOException ee)
         {
-            if (MessageBox.Show(string.Format("Error occured while reading source file: {0} Try read again?", ee.Message), "Error", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
-            {
                 Thread.Sleep(5000);
                 try
                 {
@@ -113,14 +111,17 @@ namespace SlRIAUpload
                 }
                 catch (IOException e)
                 {
-                    Resume(e);
+                    if (MessageBox.Show(string.Format("Error occured while reading source file: {0} Try read again?", ee.Message), "Error", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                    {
+                        Resume(e);
+                    }
+                    else
+                    {
+                        retryRead = false;
+                        _context.FileIfExistsDelete(_finfo.Name);
+                    }
                 }
-            }
-            else
-            {
-                retryRead = false;
-                _context.FileIfExistsDelete(_finfo.Name);
-            }
+           
         }
 
         private void writeNextBuffer(byte[] buffer)
