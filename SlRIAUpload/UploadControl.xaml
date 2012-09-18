@@ -4,23 +4,61 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="200" d:DesignWidth="500" Name="ucUpload">
+    d:DesignHeight="130" d:DesignWidth="500" Name="ucUpload" >
     
-    <Grid x:Name="LayoutRoot" Background="Gray">
+    <Grid x:Name="LayoutRoot" Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="140" />
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Vertical" Grid.Row="0" Margin="6">
-            <TextBlock Text="Selected file:" Margin="6" Foreground="Yellow"/>
-            <TextBlock Text="***********" Name="txtFilename" Foreground="Yellow" Margin="6"/>
-            <ProgressBar Name="uploadProgress" Height="20" Grid.Row="0" SmallChange="1" Minimum="0" Maximum="100" Margin="6" />
-            <TextBlock Text="0%" Name="txtProgress" Margin="6" Foreground="Yellow" HorizontalAlignment="Center"/>
-        </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Name="btnSelect" Width="70" Height="25" Margin="6" Content="Select file" Click="btnSelect_Click" />
-            <Button Name="btnPause" Width="70" Height="25" Margin="6" Content="Pause" Click="btnPause_Click" />
-            <Button Name="btnCancel" Width="70" Height="25" Margin="6" Content="Cancel" Click="btnCancel_Click"/>
+        <Border Grid.Row="0" BorderThickness="0,1" BorderBrush="Black">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFD3D7EF" Offset="0.448" />
+                    <GradientStop Color="White" Offset="1" />
+                    <GradientStop Color="White" Offset="0.012" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <TextBlock Text="Status" Name="txtStatus" FontWeight="Bold" Margin="6,0,0,0" VerticalAlignment="Center" />
+        </Border>   
+        <Border Grid.Row="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="100" />
+                </Grid.ColumnDefinitions>
+                <ProgressBar Name="uploadProgress" Height="30" Grid.Row="0" Grid.ColumnSpan="3" SmallChange="1" Minimum="0" Maximum="100" Margin="6" BorderBrush="Black" Background="White">
+                    <ProgressBar.Foreground>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="White" Offset="0" />
+                            <GradientStop Color="White" Offset="1" />
+                            <GradientStop Color="#FFFFAC00" Offset="0.512" />
+                            <GradientStop Color="#FFFFEF00" Offset="0.878" />
+                            <GradientStop Color="#FFFFEF00" Offset="0.134" />
+                        </LinearGradientBrush>
+                    </ProgressBar.Foreground>
+                </ProgressBar>
+                <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Name="txtFilename" Foreground="Black" Margin="12,6,6,6" FontWeight="Bold" />
+                <TextBlock Text="0%" Grid.Row="0" Grid.Column="1" Name="txtProgress" Margin="6" VerticalAlignment="Center" Foreground="Black" HorizontalAlignment="Center" FontWeight="Bold" />
+            </Grid>
+        </Border>
+        <Border Grid.Row="2" BorderBrush="Black" BorderThickness="0,1,1,1">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFD3D7EF" Offset="0.448" />
+                    <GradientStop Color="White" Offset="1" />
+                    <GradientStop Color="White" Offset="0.012" />
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Name="btnSelect" Width="70" Height="25" Margin="6" Content="Select file" Click="btnSelect_Click" FontWeight="Bold" />
+            <Button Name="btnPause" Width="70" Height="25" Margin="6" Content="Pause" Click="btnPause_Click" FontWeight="Bold" />
+            <Button Name="btnCancel" Width="70" Height="25" Margin="6" Content="Cancel" Click="btnCancel_Click" FontWeight="Bold" />
         </StackPanel>
     </Grid>
 </UserControl>

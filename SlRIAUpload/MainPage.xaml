@@ -6,7 +6,7 @@
     mc:Ignorable="d"
     d:DesignHeight="411" d:DesignWidth="535" xmlns:my="clr-namespace:SlRIAUpload">
 
-    <Grid x:Name="LayoutRoot" Background="White">
-        <my:UploadControl HorizontalAlignment="Left" Margin="12,12,0,0" x:Name="uploadControl1" VerticalAlignment="Top" Width="479" Height="199" />
+    <Grid x:Name="LayoutRoot" Background="#FF5C6C7C">
+        <my:UploadControl HorizontalAlignment="Left" Margin="12,12,0,0" x:Name="uploadControl1" VerticalAlignment="Top" Width="479" Height="130" />
     </Grid>
 </UserControl>

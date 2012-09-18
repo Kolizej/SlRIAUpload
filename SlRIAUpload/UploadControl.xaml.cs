@@ -67,6 +67,7 @@ namespace SlRIAUpload
 
         private byte[] readNextBuffer()
         {
+            txtStatus.Text = "Uploading...";
             retryRead = true;
             byte[] buffer = new byte[bufferSize];
             while (retryRead)
@@ -101,9 +102,10 @@ namespace SlRIAUpload
                 MessageBox.Show("Upload completed");
                 btnSelect.IsEnabled = true;
                 ClearUploadingValues();
-                txtFilename.Text = _finfo.Name + " (Completed) ";
+                txtStatus.Text = "Completed";
                 return null;
             }
+
 
             currentBuffer = buffer;
             return buffer;
@@ -181,12 +183,12 @@ namespace SlRIAUpload
                 btnPause.Content = "Pause";
                 IsPaused = false;
                 writeNextBuffer(currentBuffer);
-                txtFilename.Text = _finfo.Name;
+                txtStatus.Text = "Uploading...";
             }
             else
             {
                 btnPause.Content = "Resume";
-                txtFilename.Text = _finfo.Name + " (Paused) ";
+                txtStatus.Text = "Paused";
                 IsPaused = true;
             }
         }
@@ -204,7 +206,7 @@ namespace SlRIAUpload
             btnSelect.IsEnabled = true;
             btnPause.IsEnabled = false;
             btnCancel.IsEnabled = false;
-            txtFilename.Text = _finfo.Name + " (Canceled) ";
+            txtStatus.Text = "Canceled";
             IsPaused = false;
         }        
     }
