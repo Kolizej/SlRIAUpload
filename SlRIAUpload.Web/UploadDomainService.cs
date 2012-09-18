@@ -25,9 +25,9 @@ namespace SlRIAUpload.Web
                 fileWriter.Close();
                 return true;
             }
-            catch (IOException)
+            catch (IOException ee)
             {
-                return false;
+                throw new IOException("Uploading Error");
             }
         }
 

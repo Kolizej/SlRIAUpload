@@ -27,16 +27,29 @@ namespace SlRIAUpload
         private BinaryReader br = null;
         private int numChuncks = 0;
         private const int bufferSize = 4096;
-        private bool retryWrite = true;
         private bool retryRead = true;
         private Stream fs = null;
         private long currentSeekPosition = 0;
         private byte[] currentBuffer = null;
+        private bool IsPaused = false;
 
         public UploadControl()
         {
             InitializeComponent();
             _context = new UploadDomainContext();
+            btnPause.IsEnabled = false;
+            btnCancel.IsEnabled = false;
+        }
+
+        private void ClearUploadingValues()
+        {
+            btnSelect.IsEnabled = true;
+            btnPause.IsEnabled = false;
+            btnCancel.IsEnabled = false;
+            uploadProgress.Value = 0;
+            currentProgressIterator = 0;
+            progressIterator = 0;
+            txtProgress.Text = "0%";
         }
 
         private void UploadFile()
@@ -45,6 +58,9 @@ namespace SlRIAUpload
             br = new BinaryReader(fs);
             numChuncks = Convert.ToInt32(fs.Length / bufferSize) + 1;
             progressIterator = 100 / Convert.ToDouble(numChuncks);
+            btnSelect.IsEnabled = false;
+            btnPause.IsEnabled = true;
+            btnCancel.IsEnabled = true;
             byte[] buffer = readNextBuffer();
             writeNextBuffer(buffer);
         }
@@ -83,6 +99,9 @@ namespace SlRIAUpload
             if (buffer.Length == 0)
             {
                 MessageBox.Show("Upload completed");
+                btnSelect.IsEnabled = true;
+                ClearUploadingValues();
+                txtFilename.Text = _finfo.Name + " (Completed) ";
                 return null;
             }
 
@@ -92,28 +111,37 @@ namespace SlRIAUpload
 
         private void writeNextBuffer(byte[] buffer)
         {
-            op_upload = _context.UploadFilePart(_finfo.Name, buffer);
-            op_upload.Completed += new EventHandler(op_upload_Completed);
+            if (buffer != null)
+            {
+                op_upload = _context.UploadFilePart(_finfo.Name, buffer);
+                op_upload.Completed += new EventHandler(op_upload_Completed);
+            }
         }
 
         void op_upload_Completed(object sender, EventArgs e)
         {
-            if (op_upload.Value)
+            if (IsPaused)
+                return;
+
+            if(!op_upload.HasError)
             {
-                currentProgressIterator += progressIterator;
-
-                if (Dispatcher.CheckAccess())
+                if (op_upload.Value)
                 {
-                    uploadProgress.Value = Convert.ToInt32(currentProgressIterator);
-                    txtProgress.Text = uploadProgress.Value.ToString() + "%";
-                }
-                else
-                {
-                    Dispatcher.BeginInvoke((EventHandler)op_upload_Completed, sender, e);
-                }
+                    currentProgressIterator += progressIterator;
 
-                byte[] buffer = readNextBuffer();
-                writeNextBuffer(buffer);
+                    if (Dispatcher.CheckAccess())
+                    {
+                        uploadProgress.Value = Convert.ToInt32(currentProgressIterator);
+                        txtProgress.Text = uploadProgress.Value.ToString() + "%";
+                    }
+                    else
+                    {
+                        Dispatcher.BeginInvoke((EventHandler)op_upload_Completed, sender, e);
+                    }
+
+                    byte[] buffer = readNextBuffer();
+                    writeNextBuffer(buffer);
+                }
             }
             else
             {
@@ -138,11 +166,46 @@ namespace SlRIAUpload
             OpenFileDialog fd = new OpenFileDialog();
             if (fd.ShowDialog().Value)
             {
+                ClearUploadingValues();
                 _finfo = fd.File;
                 txtFilename.Text = _finfo.Name;
                 InvokeOperation op_delete = _context.FileIfExistsDelete(_finfo.Name);
                 op_delete.Completed += new EventHandler(op_delete_Completed);               
             }
+        }
+
+        private void btnPause_Click(object sender, RoutedEventArgs e)
+        {
+            if (IsPaused)
+            {
+                btnPause.Content = "Pause";
+                IsPaused = false;
+                writeNextBuffer(currentBuffer);
+                txtFilename.Text = _finfo.Name;
+            }
+            else
+            {
+                btnPause.Content = "Resume";
+                txtFilename.Text = _finfo.Name + " (Paused) ";
+                IsPaused = true;
+            }
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            IsPaused = true;
+            InvokeOperation op_deleteOnCancel = _context.FileIfExistsDelete(_finfo.Name);
+            op_deleteOnCancel.Completed += new EventHandler(op_deleteOnCancel_Completed);
+        }
+
+        void op_deleteOnCancel_Completed(object sender, EventArgs e)
+        {
+            ClearUploadingValues();
+            btnSelect.IsEnabled = true;
+            btnPause.IsEnabled = false;
+            btnCancel.IsEnabled = false;
+            txtFilename.Text = _finfo.Name + " (Canceled) ";
+            IsPaused = false;
         }        
     }
 }

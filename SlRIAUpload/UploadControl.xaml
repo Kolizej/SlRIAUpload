@@ -19,6 +19,8 @@
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Name="btnSelect" Width="70" Height="25" Margin="6" Content="Select file" Click="btnSelect_Click" />
+            <Button Name="btnPause" Width="70" Height="25" Margin="6" Content="Pause" Click="btnPause_Click" />
+            <Button Name="btnCancel" Width="70" Height="25" Margin="6" Content="Cancel" Click="btnCancel_Click"/>
         </StackPanel>
     </Grid>
 </UserControl>
